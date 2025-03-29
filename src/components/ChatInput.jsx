@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const ChatInput = ({ onSubmit, disabled }) => {
     const [question, setQuestion] = useState("");
@@ -24,13 +25,13 @@ const ChatInput = ({ onSubmit, disabled }) => {
                     onChange={(e) => setQuestion(e.target.value)}
                     disabled={disabled}
                 />
-                <button 
+                <Button 
                     type="submit" 
                     className="p-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={disabled || !question.trim()}
                 >
                     <Send size={20} />
-                </button>
+                </Button>
             </form>
         </div>
     );

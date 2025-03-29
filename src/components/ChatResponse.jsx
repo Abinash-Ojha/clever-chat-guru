@@ -1,17 +1,43 @@
 
-import { ExternalLink } from "lucide-react";
+import { useState } from "react";
+import { ExternalLink, Copy, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const ChatResponse = ({ response }) => {
+    const [copiedIndex, setCopiedIndex] = useState(null);
+
     if (!response) {
         return null;
     }
     
     const { candidates, usageMetadata } = response;
     
+    const copyToClipboard = (text, index) => {
+        navigator.clipboard.writeText(text);
+        setCopiedIndex(index);
+        setTimeout(() => setCopiedIndex(null), 2000);
+    };
+
     return (
         <div className="w-full max-w-4xl mx-auto">
             {candidates?.map((candidate, index) => (
                 <div className="response-card p-5 mb-6" key={index}>
+                    <div className="flex justify-between items-start mb-4">
+                        <h3 className="text-xl font-medium text-blue-400">Response</h3>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-gray-400 hover:text-white"
+                            onClick={() => copyToClipboard(candidate.content.parts[0].text, index)}
+                        >
+                            {copiedIndex === index ? (
+                                <><Check size={16} className="mr-1" /> Copied</>
+                            ) : (
+                                <><Copy size={16} className="mr-1" /> Copy</>
+                            )}
+                        </Button>
+                    </div>
+                    
                     <div className="mb-4">
                         <p className="text-white/90 whitespace-pre-line">
                             {candidate.content.parts[0].text}
